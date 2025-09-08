@@ -1,0 +1,97 @@
+# syntax=docker/dockerfile:1
+
+FROM docker.io/i386/alpine:3.18.5
+# Using 3.18.5: https://github.com/copy/v86/issues/1324
+RUN apk add mkinitfs --no-cache --allow-untrusted --repository https://dl-cdn.alpinelinux.org/alpine/v3.19/main
+
+ENV KERNEL=virt
+
+# coreutils-doc is needed to have the man pages of command like `ls`, `cat`, `cp`, etc. (altough busybox is installed instead of coreutils)
+# Possible fix in the future: switch to coreutils instead of busybox, but it will increase the image size
+ENV ADDPKGS="python3 gcc musl-dev make docs micro busybox-extras e2fsprogs coreutils-doc bash musl musl-utils musl-locales tzdata lang kbd-bkeymaps"
+
+RUN apk add openrc alpine-base agetty alpine-conf linux-$KERNEL linux-firmware-none $ADDPKGS
+
+#Patch micro to provide an alternative binding NextSplit to Ctrl+W (which close the browser tab). Fix: rebinding Ctrl+Space to NextSplit
+RUN mv /usr/bin/micro /usr/bin/_micro ;\
+mkdir /etc/micro;\
+chmod +r /etc/micro;\
+printf '{"Alt-/": "lua:comment.comment","CtrlUnderscore": "lua:comment.comment","CtrlSpace": "NextSplit"}' > /etc/micro/bindings.json ;\
+printf '#!/bin/sh\n/usr/bin/_micro -config-dir /etc/micro $@' > /usr/bin/micro;\
+chmod +x /usr/bin/micro
+
+
+RUN mkdir -p /home/user42
+RUN adduser -D -s /bin/ash -h /home/user42 user42
+COPY home101/ /home/user42/
+COPY run_at_startup_root.sh /root/run_at_startup_root.sh
+RUN chmod +x /root/run_at_startup_root.sh
+RUN chown -R user42:user42 /home/user42/
+
+#RUN sed -i 's/getty 38400 tty1/agetty --autologin root tty1 linux/' /etc/inittab
+RUN echo 'ttyS0::respawn:/sbin/agetty --autologin root -s ttyS0 115200 vt100' >> /etc/inittab
+RUN sed 's@tty1::respawn:/sbin/getty 38400 tty1@@g' -i /etc/inittab
+RUN echo 'tty1::respawn:/sbin/getty -n -l /bin/autologin 38400 tty1' >> /etc/inittab
+
+#RUN echo 'tty1::respawn:/sbin/agetty -n -l /bin/autologin tty1 linux' >> /etc/inittab
+RUN echo "root:" | chpasswd
+RUN echo "user42:" | chpasswd
+
+
+
+RUN mkdir -p /delivery
+RUN chown user42:user42 /delivery
+
+# Adding networking.sh script
+#RUN echo -e "rmmod ne2k-pci && modprobe ne2k-pci\nrmmod virtio-net && modprobe virtio-net\nhwclock -s\nsetup-interfaces -a -r" > /root/networking.sh && chmod +x /root/networking.sh
+
+
+COPY <<EOF /etc/profile.d/999setup_env_user42.sh
+if [[ $(id -u) -eq 1000 ]]; then
+    export PS1='$> '
+    #export HOME=/tmp/game_map
+    export PATH=/tmp/bin:$PATH
+    [[ $(tty) != /dev/tty1 ]] && exit 0
+    if [[ ! -f /tmp/.ran_once ]]; then
+        cat << END
+Bienvenue !
+
+Vous vous réveillez au milieu d'une route, sans aucun souvenir de comment vous êtes arrivé là.
+En fait, vous avez perdu presque toute votre mémoire.
+La seule chose dont vous vous souvenez est :
+- pour marcher : cd <zone>
+- pour revenir à l'emplacement précédent : cd ..
+- pour regarder autour de vous : ls
+- pour parler : talk <pnj>
+- pour avoir des informations sur vous : player
+
+Entrez la commande suivante pour vous rendre dans l'environment du RPG:
+cd /tmp/game_map
+
+END
+
+    echo "ok" > /tmp/.ran_once
+    fi
+    cd
+fi
+EOF
+
+
+COPY <<EOF /bin/autologin
+#!/bin/sh
+
+clear
+exec login -f user42
+EOF
+
+RUN chmod +x /bin/autologin
+
+RUN setup-keymap fr fr
+
+# https://wiki.alpinelinux.org/wiki/Alpine_Linux_in_a_chroot#Preparing_init_services
+RUN for i in devfs dmesg mdev hwdrivers; do rc-update add $i sysinit; done
+RUN for i in hwclock modules sysctl hostname syslog bootmisc; do rc-update add $i boot; done
+RUN rc-update add killprocs shutdown
+
+# Generate initramfs with 9p modules
+RUN mkinitfs -F "base virtio 9p" $(cat /usr/share/kernel/$KERNEL/kernel.release)

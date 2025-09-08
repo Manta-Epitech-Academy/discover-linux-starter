@@ -1,0 +1,8 @@
+module:     D-@@@-###
+title:      Discover Linux
+subtitle:   Découverte de l'interface en ligne de commande sous Linux
+branding:   academy PGE
+debug:      true
+github:     http://example.com
+parts:
+  - path: Linux.md
