@@ -8,6 +8,8 @@ import base64
 
 base = "/tmp/game_map"
 
+
+
 livres = [
     "Germinal",
     "Madame Bovary",
@@ -446,6 +448,476 @@ class Story5(AlwaysValid): # Quest giver: Quentintin, Location: Village
             f"{self.npc} : Je me sens si bien, caché de tous !\n"
             "Il parait qu'au fond du lac, il y'a un trésor, si tu arrives à trouver le Capitaine Haddock, parle lui, il te conseillera"
         )
+
+
+MAP_HALLOWEEN = {
+     "subzones": [
+        {
+            "name": "village",
+            "npcs":
+            [
+                {
+                    "name": "Kevin",
+                    "talk": "Bouh ! Me revoilà, artisan de l’ombre… Prêt à relever les ruines hantées ?",
+                    "quests":
+                    [
+                        {
+                            "name": "mkdir",
+                            "must_done": [],
+                            "text": "Le village est devenu un cimetière de ruines… nous devons le relever avant que les spectres ne s’en emparent ! Utilisez la commande mkdir pour ériger 3 maisons (abris contre les esprits).",
+                            "desc": "Aidez à reconstruire le village hanté. Créez 3 maisons pour repousser les fantômes.",
+                            "level": 1,
+                            "script": "quests.npc_def.Mkdir",
+                            "rewards": [
+                                {
+                                    "type": "command",
+                                    "name": "cat <file>",
+                                    "desc": "Lire les sombres secrets gravés dans un fichier",
+                                },
+                                {
+                                    "type": "command",
+                                    "name": "mkdir <dir>",
+                                    "desc": "Invoquer une nouvelle demeure à partir du néant",
+                                }
+                            ]
+                        },
+                        {
+                            "name": "story1",
+                            "must_done": ["mkdir"],
+                            "script": "quests.npc_def.Story1",
+                            "desc": "Kevin vous murmure qu’il faudrait explorer la forêt maudite et la montagne obscure… des âmes perdues y attendent votre aide.",
+                            "level": 0,
+                            "rewards": [
+                                {
+                                    "type": "story",
+                                    "value": "story1",
+                                    "desc": "Kevin vous murmure qu’il faudrait explorer la forêt maudite et la montagne obscure… des âmes perdues y attendent votre aide.",
+                                }
+                            ],
+                        }
+                    ]
+                },
+                {
+                    "name": "Quentintin",
+                    "talk": "Chhhht… Les esprits rôdent, tu ne veux pas qu’ils m’entendent, si ?",
+                    "quests":
+                    [
+                        {
+                            "name": "Planque",
+                            "must_done": ["mkdir", "list_hidden"],
+                            "text": "Je déteste rester au milieu du village… les lanternes dansent et les ombres m’étranglent. Crée-moi une cachette, je t’en supplie !",
+                            "desc": "Aidez Quentintin à créer un repaire secret, un dossier caché où il pourra se dissimuler des spectres.",
+                            "level": 1,
+                            "script": "quests.npc_def.HiddenCreate"
+                        },
+                        {
+                            "name": "Story5",
+                            "must_done": ["Planque"],
+                            "text": "Trouve le capitaine Haddock près du lac maudit, il t’attend dans le brouillard.",
+                            "desc": "Rejoins Haddock au bord du lac hanté.",
+                            "level": 1,
+                            "script": "quests.npc_def.Story5"
+                        }
+                    ]
+                },
+                {
+                    "name": "Paul",
+                    "talk": "Ahahah ! C’est moi, Paul, le marchand de malices et de lanternes ensorcelées.",
+                    "quests":
+                    [
+                        {
+                            "name": "who_s_there",
+                            "must_doing": ["fedex1"],
+                            "text": "Tu veux des outils pour creuser un passage dans la montagne des damnés ? Donne-moi d’abord ton nom, mortel…",
+                            "desc": "Révélez votre nom à Paul, le filou des ténèbres.",
+                            "level": 1,
+                            "script": "quests.npc_def.WhoIsThere",
+                            "rewards": [
+                                {
+                                    "type": "command",
+                                    "name": "sort <fichier> -o <fichier>",
+                                    "desc": "Trier des lignes… ou des incantations, par ordre alphabétique.",
+                                },
+                            ]
+                        },
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "montagne",
+            "npcs":
+            [
+                {
+                    "name": "Jacques",
+                    "talk": "Aïe… ma jambe me ronge comme une malédiction, mais je garde le sourire du squelette !",
+                    "quests":
+                    [
+                        {
+                            "name": "move",
+                            "must_done": [],
+                            "text": "Ma jambe est brisée… Aidez-moi à regagner le village avant que les goules ne viennent me chercher.",
+                            "desc": "Ramenez Jacques au village avant que les ombres n’approchent.",
+                            "level": 1,
+                            "script": "quests.npc_def.Move",
+                            "rewards":
+                            [
+                                {
+                                    "type": "command",
+                                    "name": "ls -a",
+                                    "desc": "Révéler tout ce qui se cache dans les ténèbres, y compris l’invisible…",
+                                },
+                            ]
+                        },
+                        {
+                            "name": "story2",
+                            "must_done": ["move"],
+                            "script": "quests.npc_def.Story2",
+                            "desc": "Jacques vous raconte qu’il existait jadis un sombre passage à travers la montagne… détruit quand les flammes ont dévoré le village.",
+                            "level": 0,
+                            "rewards": [
+                                {
+                                    "type": "story",
+                                    "value": "story2",
+                                    "desc": "Jacques vous raconte qu’il existait jadis un sombre passage à travers la montagne… détruit quand les flammes ont dévoré le village.",
+                                },
+                                {
+                                    "type": "command",
+                                    "name": "mkdir .<dir>",
+                                    "desc": "Créer un repaire secret (un répertoire invisible, marqué par un point).",
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "subzones": [
+                {
+                    "name": ".passage_secret",
+                    "must_done": ["list_hidden"],
+                    "post_creation": lambda _: os.chmod(_, 0o600),
+                    "npcs":
+                    [
+                        {
+                            "name": "Ouvrier",
+                            "talk": "Travail sans fin… mes mains couvertes de poussière et de sang. Mais je souris toujours, même dans l’ombre !",
+                            "quests":
+                            [
+                                {
+                                    "name": "fedex1",
+                                    "must_done": [],
+                                    "text": "Apportez-moi des outils du village… sinon, nous resterons prisonniers dans cette montagne maudite. Cherchez Paul, le fourbe aux lanternes.",
+                                    "desc": "Apportez des outils du village au passage secret.",
+                                    "level": 2,
+                                    "script": "quests.npc_def.Fedex1",
+                                    "setup_quest": "quests.npc_def.SetupFedex1",
+                                    "rewards": [
+                                        {
+                                            "type": "command",
+                                            "name": "whoami",
+                                            "desc": "Révéler le nom de l’âme qui habite ce corps.",
+                                        },
+                                    ]
+                                },
+                                {
+                                    "name": "story3",
+                                    "must_done": ["fedex1"],
+                                    "script": "quests.npc_def.Story3",
+                                    "desc": "L’ouvrier vous dit qu’un tunnel hanté est désormais ouvert, menant de l’autre côté de la montagne.",
+                                    "level": 0,
+                                    "rewards": [
+                                        {
+                                            "type": "command",
+                                            "name": "cp <source> <destination>",
+                                            "desc": "Copier un objet… ou une malédiction.",
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "subzones": [
+                        {
+                            "name": "route_de_montagne",
+                            "post_creation": lambda _: os.chmod(_, 0o600),
+                            "npcs":
+                            [
+                                {
+                                    "name": "Marchand",
+                                    "talk": "Bienvenue, voyageur… mes marchandises grincent autant que mes histoires lugubres.",
+                                    "quests":
+                                    [
+                                        {
+                                            "name": "copy",
+                                            "must_done": [],
+                                            "text": "Une roue de ma charrette spectrale est brisée. L’autre est intacte… pouvez-vous en faire une copie avant que le sortilège ne s’effondre ?",
+                                            "desc": "Aidez le marchand en copiant la roue encore intacte.",
+                                            "level": 2,
+                                            "script": "quests.npc_def.Copy",
+                                        },
+                                        {
+                                            "name": "story4",
+                                            "must_done": ["copy"],
+                                            "script": "quests.npc_def.Story4",
+                                            "desc": "Le marchand vous glisse qu’au château, un Roi en quête de héros vous attend dans les ténèbres.",
+                                            "level": 0,
+                                            "rewards": []
+                                        }
+                                    ]
+                                }
+                            ],
+                            "objects": [
+                                {
+                                    "name": "roue",
+                                    "desc": "Une roue grinçante mais intacte, sortie d’une charrette spectrale.",
+                                    "content": "a312cb11576b058d0b9a13e1c06c61ac"
+                                }
+                            ],
+                            "subzones": [
+                                {
+                                    "name": "lac",
+                                    "subzones": [
+                                        {
+                                            "name": "mer",
+                                            "symlink_to": "foret/mer",
+                                        },
+                                        {
+                                            "name": "fond_du_lac",
+                                            "npcs": [],
+                                            "objects": [
+                                                *create_lake_files() 
+                                            ]
+                                        }
+                                    ],
+                                    "npcs": [
+                                        {
+                                            "name": "Haddock",
+                                            "talk": "Par les abysses et les spectres marins ! Approche, moussaillon des ombres…",
+                                            "quests": [
+                                                {
+                                                "name": "Find treasure",
+                                                "must_done": ["Planque"],
+                                                "text": "Ramène-moi ce trésor maudit qui dort au fond du lac noir… Et pas ailleurs, sombre crâne d’os !",
+                                                "desc": "Ramenez le trésor pour le capitaine fantomatique Haddock.",
+                                                "level": 2,
+                                                "script": "quests.npc_def.Treasure"
+                                                },
+                                                {
+                                                "name": "Open treasure",
+                                                "must_done": ["Find treasure"],
+                                                "text": "Ce coffre est enfermé dans un cercueil .tar ! Pour le briser : tar -xvf tresor.tar … et que les malédictions s’échappent enfin !",
+                                                "desc": "Ouvrez le trésor pour Haddock.",
+                                                "level": 2,
+                                                "script": "quests.npc_def.TreasureOpen"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "vallee",
+                                    "npcs": [],
+                                    "objects": [],
+                                    "subzones": [
+                                        {
+                                            "name": "chateau",
+                                            "npcs": [
+                                                {
+                                                    "name": "Serviteur",
+                                                    "talk": "Bienvenue dans le château aux couloirs glacés… Puis-je vous assister, hôte de l’ombre ?",
+                                                    "quests": [
+                                                        {
+                                                            "name": "sort_books",
+                                                            "must_done": [],
+                                                            "text": "Pardonnez-moi, mais je dois trier ces grimoires poussiéreux avant de pouvoir vous guider.",
+                                                            "desc": "Trier les grimoires de la bibliothèque du château.",
+                                                            "level": 2,
+                                                            "script": "quests.npc_def.SortBooks"
+                                                        },
+                                                        {
+                                                            "name": "Is_king",
+                                                            "must_done": ["brigands_phase2"],
+                                                            "text": "Bravo… vous avez purgé les brigands. Mais notre Roi… est-il encore parmi les vivants ?",
+                                                            "desc": "Le Roi est-il mort… ou pire ?",
+                                                            "level": 2,
+                                                            "script": "quests.npc_def.IsKing"
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "subzones": [
+                                                {
+                                                    "name": "bibliotheque",
+                                                    "objects": [
+                                                        {
+                                                            "name": "livres",
+                                                            "desc": "Des grimoires poussiéreux qui attendent d’être triés.",
+                                                            "content": "\n".join(livres) + "\n"
+                                                        }
+                                                    ],
+                                                },
+                                                {
+                                                    "name": "donjon",
+                                                    "npcs": [
+                                                        {
+                                                            "name": "Garde",
+                                                            "talk": "Silence ! Dans ce donjon hanté, rien n’échappe à mon regard de pierre.",
+                                                            "quests": [
+                                                                {
+                                                                    "name": "shortcut",
+                                                                    "must_done": ["sort_books"],
+                                                                    "text": "J’ai besoin d’un raccourci vers le village… sinon je serai damné à garder cette porte à jamais.",
+                                                                    "desc": "Créer un raccourci spectral vers le village.",
+                                                                    "level": 3,
+                                                                    "script": "quests.npc_def.shortcut"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "salle_du_trone",
+                                                    "npcs": [
+                                                            {
+                                                                "name": "Roi",
+                                                                "talk": "Approche, héros des ténèbres… le royaume agonise, et ton courage est notre dernière lueur.",
+                                                                "quests": [
+                                                                    {
+                                                                        "name": "royal_summons",
+                                                                        "must_done": [],
+                                                                        "text": "Enfin, te voilà. Des brigands sortis des abysses arrivent par la mer ! Ils doivent être détruits.",
+                                                                        "desc": "Parler au Roi spectral.",
+                                                                        "level": 0,
+                                                                        "script": "quests.npc_def.KingSummons",
+                                                                        "rewards": []
+                                                                    },
+                                                                    {
+                                                                        "name": "brigands_phase1",
+                                                                        "must_done": ["royal_summons"],
+                                                                        "text": "Élimine les 3 brigands de la plage… tranche-les à la main, un par un, avant que la lune ne se voile.",
+                                                                        "desc": "Vaincre 3 brigands manuellement.",
+                                                                        "level": 2,
+                                                                        "script": "quests.npc_def.KingBrigandsManual",
+                                                                        "rewards": [
+                                                                            {
+                                                                                "type": "command",
+                                                                                "name": "./canon.sh",
+                                                                                "desc": "Déchaîner la colère du canon maudit",
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "name": "brigands_phase2",
+                                                                        "must_done": ["brigands_phase1"],
+                                                                        "text": "Bien joué… mais les vagues en amènent d’autres ! Prends ce canon.sh, mais prends garde : il est aussi dangereux qu’instable.",
+                                                                        "desc": "Vaincre la horde entière de brigands.",
+                                                                        "level": 3,
+                                                                        "script": "quests.npc_def.KingCanonIntro",
+                                                                        "rewards": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                    ]
+                }
+            ],
+        },
+        {
+            "name": "foret",
+            "npcs":
+            [
+                {
+                    "name": "Alain_Leflou",
+                    "talk": "Oh non… j’ai encore perdu mes lunettes ! Sans elles, les esprits du bois me guettent… peux-tu m’aider ?",
+                    "quests":
+                    [
+                        {
+                            "must_done": [],
+                            "name": "list_read",
+                            "text": "Mes yeux aveugles ne peuvent lire le panneau maudit… lis-le pour moi, que je retrouve le chemin du village.",
+                            "desc": "Lisez le panneau hanté dans la forêt.",
+                            "level": 1,
+                            "script": "quests.npc_def.ReadFile",
+                            "rewards":
+                            [
+                                {
+                                    "type": "command",
+                                    "name": "mv <source> <destination>",
+                                    "desc": "Déplacer un fichier… comme un spectre glissant dans l’ombre.",
+                                },
+                            ]
+                        },
+                        {
+                            "must_done": ["list_read"],
+                            "name": "list_hidden",
+                            "text": "Une carte au trésor maudit est tapie dans la forêt, cachée aux yeux des vivants.",
+                            "desc": "Trouvez et lisez le panneau spectral dissimulé dans la forêt.",
+                            "level": 2,
+                            "script": "quests.npc_def.HiddenFile",
+                            "rewards":
+                            [
+                                {
+                                    "type": "command",
+                                    "name": "pwd",
+                                    "desc": "Révéler la crypte (le répertoire courant où vous vous trouvez).",
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ],
+            "objects":
+            [
+                {
+                    "name": "panneau",
+                    "desc": "Un panneau en bois rongé par les toiles d’araignées, avec des symboles étranges.",
+                    "content": "cd ../village\n"
+                },
+                {
+                    "name": ".carte_cachee",
+                    "desc": "Un parchemin moisi, caché sous les feuilles mortes, couvert de runes.",
+                    "content": "cd ../montagne/.passage_secret\n"
+                }
+            ],
+            "subzones": [
+                {
+                    "name": "mer",
+                    "npcs": [
+                        {
+                            "name": "Pecheur",
+                            "talk": "Le vent hurle, les vagues gémissent… et moi je ramasse des coquillages maudits.",
+                            "quests": [
+                                {
+                                    "name": "collect_shells",
+                                    "must_done": [],
+                                    "text": "J’ai trouvé un coquillage aux reflets sinistres… mais il ne me servira à rien. Tu le veux ?",
+                                    "desc": "Obtenez le coquillage maudit du pêcheur.",
+                                    "level": 1,
+                                    "script": "quests.npc_def.AcceptShell",
+                                    "rewards": [
+                                        {
+                                            "type": "command",
+                                            "name": "nom@machine:directory$ ",
+                                            "desc": "Votre prompt révèle désormais votre nom d’utilisateur, le nom de la machine et la crypte (répertoire courant).",
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                }
+            ]
+        }
+    ],
+}
+
 
 
 MAP =  {
@@ -990,37 +1462,8 @@ if __name__ == "__main__":
     base_dir = os.path.join("/tmp", "game_map")
     os.system(f"rm -rf {base_dir}")  # temp. cleanup
     os.makedirs(base_dir)
-    create_zone(base_dir, MAP)
+    create_zone(base_dir, MAP_HALLOWEEN)
     create_symlinks(base_dir)
     execute_post_ops()
     print(f"Game map created at {base_dir} with total quests: {total_quests}")
 
-### REST OF THE LORE IDEA:
-
-"""
-Speak to the King, he seems very young but he seems to recognize you.
-
-You ask him about the village destruction, he tells you that the village was destroyed by brigands who arrived by the sea a few weeks ago.
-
-That night the King lost his father, the previous King who went to defend the village with his army and an inexperienced mage.
-
-The mage knew some powerful spells but was not able to control them, he accidentally destroyed the village and killed the previous King and his army.
-
-As you can also cast some spells, the King asks you to be his new mage and help him defend the continent against the brigands.
-
-You get a quest to find the mage's spellbook, which is hidden in the depth of the lake.
-
-You eventually find a chest in the lake containing the spellbook, but it is protected by a spell requiring you to solve a riddle:
-- "The content of the chest will be available to people who are in the tux group."
-- "The content of the chest will be available to people who can cast the decryption spell: gpg -a --decrypt --cipher-algo AES256 <file>"
-
-Being tux also allows you to enter the mage's quarters in the castle, where you can train your magic skills and learn new spells.
-
-You eventually solve the riddle and decrypt the spellbook, which contains powerful spells to help you defend the continent:
-One day the King asks you to help him with the brigands, they are back (comming from the sea) and they are stronger than ever.
-- rm <file>: to remove files -> Used to delete enemies files, but enemies will come back. (neutral ending)
-  - Improved rm command: rm * -> to remove all files in the current directory including the new King (bad ending)
-- chmod <permissions> <file>: to change file permissions -> Used to make a script executable, the script does a rm -rf /* on the continent (worst ending)
-  - Improved script: edit the script to change the rm -rf / to a safer command like rm *.enemy (good ending)
-- ps -ef and kill <pid>: to manage processes -> Used to find the enemy spawning process and kill it (best ending)
-"""
