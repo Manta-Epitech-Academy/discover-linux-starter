@@ -1,10 +1,9 @@
 #!/bin/bash
-
 ENGINE=$(basename -s .py $1)
 echo "Please wait while setting up the environment..."
 mkdir /tmp/bin
 mkdir /tmp/bin/quests
-cp quests/npc_def.py /tmp/bin/quests
+cp quests/* /tmp/bin/quests
 cp $ENGINE.py /tmp/bin
 for i in $(python3 -c "import $ENGINE; print(*$ENGINE.ACTIONS.keys())"); do
     bin=/tmp/bin/$i
@@ -19,7 +18,7 @@ export PATH=/tmp/bin:$PATH
 
 # Reset the map
 
-python3 quests/npc_def.py > /dev/null 2>&1
+python3 quests/npc_def.py
 
 
 # Set initial player state

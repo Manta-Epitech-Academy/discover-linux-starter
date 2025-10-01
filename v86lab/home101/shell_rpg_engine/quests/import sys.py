@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '/Users/quentin/repository/discover-linux-starter/v86lab/home101/shell_rpg_engine/quests')
+
 import os
 import json
 import shutil
@@ -522,4 +525,3 @@ if __name__ == "__main__":
     create_symlinks(base_dir)
     execute_post_ops()
     print(f"Game map created at {base_dir} with total quests: {total_quests}")
-
