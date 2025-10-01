@@ -222,16 +222,16 @@ class NPC:
 
     def get_quest_validation_instance(self, quest_name):
         module_name, class_name = quest_name.rsplit('.', 1)
-        # try:
-        print(module_name)
-        module = importlib.import_module(module_name)
-        print("pass")
-        quest_val_class = getattr(module, class_name)
-        quest_val_instance = quest_val_class(self.get_next_quest(), Player(), os.path.join(os.getcwd(), self.name))
-        return quest_val_instance
-        # except (ImportError, AttributeError) as e:
-        #     print("DEBUG: ", e)
-        #     return None 
+        try:
+            print(module_name)
+            module = importlib.import_module(module_name)
+            print("pass")
+            quest_val_class = getattr(module, class_name)
+            quest_val_instance = quest_val_class(self.get_next_quest(), Player(), os.path.join(os.getcwd(), self.name))
+            return quest_val_instance
+        except (ImportError, AttributeError) as e:
+            print("DEBUG: ", e)
+            return None 
 
     def check_quest(self, quest_name):
         quest_val_instance = self.get_quest_validation_instance(quest_name)

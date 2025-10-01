@@ -202,7 +202,7 @@ class Treasure(QuestValidation):
     def validate_quest(self):
         super().validate_quest()
         if os.path.isfile(f"{lac_path}/tresor.tar"):
-            return True, "Tonnerre de tonneres ! Merci d'avoir repêché ce sacré trésor, mais maintenant, bougre d'explorateur d'eau douce, il va falloir l'ouvrir, nom d'un bachibouzouk !"
+            return True, "Tonnerre de tonnerres ! Merci d'avoir repêché ce sacré trésor, mais maintenant, bougre d'explorateur d'eau douce, il va falloir l'ouvrir, nom d'un bachibouzouk !"
         else:
             return False, f"Mille sabords ! Halte-là, moussaillons ! Ramenez ce trésor au bercail, droit au {lake[T]}, et plus vite que ça, espèces de marins d'eau douce !"
 
@@ -290,7 +290,7 @@ class Shortcut(QuestValidation): # Quest giver: Guard, Location: dungeon
 
     def validate_quest(self):
         super().validate_quest()
-        dungeon_path = f"{base}/montagne/tunnel/route_de_montagne/vallee/chateau/donjon"
+        dungeon_path = f"{base}/{donjon_path}"
         if Checks.file_is_a_symlink_to(f"{dungeon_path}/raccourci", f"{base}/{village_path}/"):
             return True, f"Vous avez créé un raccourci vers le {village_path} !"
         else:
