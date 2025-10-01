@@ -274,7 +274,7 @@ class SortBooks(QuestValidation): # Quest giver: Servant, Location: castle
 
     def validate_quest(self):
         super().validate_quest()
-        library_path = f"{base}/montagne/tunnel/route_de_montagne/vallee/chateau/bibliotheque"
+        library_path = f"{chateau_path}/bibliotheque"
         for file in os.listdir(library_path):
             if file.endswith(".obj"):
                 path = f"{library_path}/{file}"
