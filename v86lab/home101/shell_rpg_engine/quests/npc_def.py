@@ -344,12 +344,11 @@ class KingSummons(AlwaysValid):  # Quest giver: Roi, Location: chateau
 class KingBrigandsManual(QuestValidation):  # Quest giver: Roi, Location: mer
     def validate_quest(self):
         super().validate_quest()
-        mer_path = f"{base}/foret/mer"
 
         brigands = [
-            os.path.join(mer_path, "brigand_1.brig"),
-            os.path.join(mer_path, "brigand_2.brig"),
-            os.path.join(mer_path, "brigand_3.brig"),
+            os.path.join(mer_for_path, "brigand_1.brig"),
+            os.path.join(mer_for_path, "brigand_2.brig"),
+            os.path.join(mer_for_path, "brigand_3.brig"),
         ]
         if all(not os.path.exists(b) for b in brigands):
             return True, "Bravo, tu as terrassé ces brigands un par un ! Mais d'autres vont arriver en masse..."
@@ -370,13 +369,12 @@ class KingBrigandsManual(QuestValidation):  # Quest giver: Roi, Location: mer
 class KingCanonIntro(QuestValidation):  # Quest giver: Roi, Location: mer
     def validate_quest(self):
         super().validate_quest()
-        mer_path = f"{base}/foret/mer"
-        Roi_path = os.path.join(mer_path, "Roi.npc")
+        Roi_path = os.path.join(mer_for_path, "Roi.npc")
 
         Roi_vivant = os.path.exists(Roi_path)
 
         brigands_restants = [
-            f for f in os.listdir(mer_path)
+            f for f in os.listdir(mer_for_path)
             if f.startswith("brigand_") and (f.endswith(".obj") or f.endswith(".brig"))
         ]
         plus_de_brigands = len(brigands_restants) == 0
@@ -389,7 +387,7 @@ class KingCanonIntro(QuestValidation):  # Quest giver: Roi, Location: mer
 class IsKing(QuestValidation):
     def validate_quest(self):
         super().validate_quest()
-        Roi_path = f"{base}/foret/mer/Roi.npc"
+        Roi_path = f"{mer_for_path}/Roi.npc"
         if os.path.isfile(Roi_path):
             os.system(f"mv {base}/foret/mer/Roi.npc {base}/montagne/tunnel/route_de_montagne/vallee/chateau/")
             return True, "Ouf... tout va bien, il est là ! Mon coeur s'est arrêté... puis il a recommencé, de battre à nouveau. Sans lui, tout aurait sombré, mais sa présence éclaire encore nos ténèbres. Tant que le Roi respire, l'espoir du royaume vit encore ! \n BONNE FIN"
