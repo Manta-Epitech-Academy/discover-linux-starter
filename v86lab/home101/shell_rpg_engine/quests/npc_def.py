@@ -274,10 +274,9 @@ class SortBooks(QuestValidation): # Quest giver: Servant, Location: castle
 
     def validate_quest(self):
         super().validate_quest()
-        library_path = f"{chateau_path}/bibliotheque"
-        for file in os.listdir(library_path):
+        for file in os.listdir(bibliotheque_path):
             if file.endswith(".obj"):
-                path = f"{library_path}/{file}"
+                path = f"{bibliotheque_path}/{file}"
                 attendu = "\n".join(sorted(livres)) + "\n"
                 with open(path, "r") as f:
                     contenu = f.read()
@@ -301,15 +300,15 @@ class HiddenFile(QuestValidation): # Quest giver: Kevin, Location: forest
 
     def validate_quest(self):
         super().validate_quest()
-        if Checks.input_str("Quel est le contenu de la carte du passage secret ?") == "cd ../montagne/.passage_secret":
+        if Checks.input_str("Quel est le contenu de la carte du passage secret ?") == f"cd {passage_secret_path}":
             self.post_quest()
             return True, "Vous avez trouvé la carte du passage secret !"
         else:
             return False, "Vous devez trouver la carte du passage secret dans la forêt."
 
     def post_quest(self):
-        os.chmod(f"{base}/montagne/.passage_secret", 0o755)
-        os.chmod(f"{base}/montagne/.passage_secret/route_de_montagne", 0o600)
+        os.chmod(f"{passage_secret_path}", 0o755)
+        os.chmod(f"{route_de_montagne_path}", 0o600)
 
 
 class AcceptShell(QuestValidation): # Quest giver: Fisherman, Location: sea
@@ -331,9 +330,9 @@ class AlwaysValid(QuestValidation): # For any quest that is always valid: For ex
 class KingSummons(AlwaysValid):  # Quest giver: Roi, Location: chateau
     def post_quest(self):
         os.system(
-            f"mv {base}/montagne/tunnel/route_de_montagne/vallee/chateau/salle_du_trone/Roi.npc {base}/foret/mer/"
+            f"mv {throne_room}/Roi.npc {mer_for_path}/"
         )
-        mer_path = f"{base}/foret/mer"
+        mer_path = f"{mer_for_path}"
         for i in range(1, 4):
             with open(f"{mer_path}/brigand_{i}.brig", "w") as f:
                 f.write("Un brigand menaçant se tient devant toi.")
@@ -355,16 +354,15 @@ class KingBrigandsManual(QuestValidation):  # Quest giver: Roi, Location: mer
         else:
             return False, "Il reste encore des brigands sur la plage, élimine-les !"
     def post_quest(self):
-        mer_path = f"{base}/foret/mer"
         super().post_quest()
         for i in range(1, 101):
-            with open(f"{mer_path}/brigand_{i}.brig", "w") as f:
+            with open(f"{mer_for_path}/brigand_{i}.brig", "w") as f:
                 f.write("Un brigand menaçant se tient devant toi.")
-        with open(f"{mer_path}/canon.sh", "w") as f:
+        with open(f"{mer_for_path}/canon.sh", "w") as f:
             f.write("#!/bin/bash\n")
             f.write("# /!\ ATTENTION : cette commande détruit TOUT dans le répertoire courant\n")
             f.write("rm *\n")
-        os.chmod(f"{mer_path}/canon.sh", 0o600)
+        os.chmod(f"{mer_for_path}/canon.sh", 0o600)
 
 class KingCanonIntro(QuestValidation):  # Quest giver: Roi, Location: mer
     def validate_quest(self):
@@ -389,7 +387,7 @@ class IsKing(QuestValidation):
         super().validate_quest()
         Roi_path = f"{mer_for_path}/Roi.npc"
         if os.path.isfile(Roi_path):
-            os.system(f"mv {base}/foret/mer/Roi.npc {base}/montagne/tunnel/route_de_montagne/vallee/chateau/")
+            os.system(f"mv {mer_for_path}/Roi.npc {chateau_path}/")
             return True, "Ouf... tout va bien, il est là ! Mon coeur s'est arrêté... puis il a recommencé, de battre à nouveau. Sans lui, tout aurait sombré, mais sa présence éclaire encore nos ténèbres. Tant que le Roi respire, l'espoir du royaume vit encore ! \n BONNE FIN"
         else:
             return False, "Noooon... le Roi est mort ! Notre lumière s'est éteinte, et avec elle l'espoir du royaume... Qui nous protégera désormais des brigands et des tempêtes à venir ? Sans lui, le château n'est plus qu'un tombeau, et nous, de simples âmes perdues au milieu des ruines...\n MAUVAISE FIN"
@@ -510,7 +508,7 @@ def dump_map(json_data):
 
 
 
-
+ 
 if __name__ == "__main__":
     #dump_map(MAP)
     base_dir = os.path.join("/tmp", "game_map")
