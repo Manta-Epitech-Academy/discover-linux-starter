@@ -264,7 +264,7 @@ class Copy(QuestValidation): # Quest giver: Merchant, Location: mountainroad
 
     def validate_quest(self):
         super().validate_quest()
-        if Checks.has_duplicate_in_dir(f"{base}/montagne/tunnel/route_de_montagne/roue.obj", f"{base}/montagne/tunnel/route_de_montagne"):
+        if Checks.has_duplicate_in_dir(f"{route_de_montagne_path}/roue.obj", f"{route_de_montagne_path}/"):
             return True, "Bravo ! Vous avez copié la bonne roue."
         else:
             return False, "Vous devez copier le contenu de la bonne roue."
@@ -336,7 +336,7 @@ class KingSummons(AlwaysValid):  # Quest giver: Roi, Location: chateau
         for i in range(1, 4):
             with open(f"{mer_path}/brigand_{i}.brig", "w") as f:
                 f.write("Un brigand menaçant se tient devant toi.")
-        print("Je pars pour la mer. Retrouve-moi là-bas, héros ! Les brigands rôdent sur la plage...")
+        print(f"Je pars pour la {sea[T]}. Retrouve-moi là-bas, héros ! Les brigands rôdent sur la plage...")
 
         
 
