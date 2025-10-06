@@ -407,9 +407,9 @@ class Story2(AlwaysValid): # Quest giver: Jacques, Location: mountain
     # Jacques says this after completing the move quest.
     def post_quest(self):
         print(
-            f"{self.npc} : Merci de m'avoir aidé à retourner au {village_path}.\n"
+            f"{self.npc} : Merci de m'avoir aidé à retourner au {village[T]}.\n"
             "Je voulais aller de l'autre côté de la montagne, mais je me suis cassé la jambe en essayant.\n"
-            f"Il était vraiment facile d'aller de l'autre côté de la montagne il y a quelques semaines, mais le raccourci a été détruit avec le {village_path}."
+            f"Il était vraiment facile d'aller de l'autre côté de la montagne il y a quelques semaines, mais le raccourci a été détruit avec le {village[T]}."
         )
 
 
@@ -419,7 +419,7 @@ class Story3(AlwaysValid): # Quest giver: Worker, Location: .secret_passage
     def post_quest(self):
         print(
             f"{self.npc} : Merci d'avoir apporté les outils !\n"
-            f"Je peux maintenant creuser un tunnel à travers la montagne jusqu'au {village_path}.\n"
+            f"Je peux maintenant creuser un tunnel à travers la montagne jusqu'au {village[T]}.\n"
             "Depuis que le raccourci a été détruit, il est vraiment difficile d'aller au château, beaucoup de villageois prennent des risques pour traverser la montagne."
         )
 
@@ -430,7 +430,7 @@ class Story4(AlwaysValid): # Quest giver: Merchant, Location: mountainroad
     def post_quest(self):
         print(
             f"{self.npc} : Merci d'avoir copié la bonne roue !\n"
-            "Vous avez aidé à construire le tunnel à travers la montagne ? C'est génial ! Vous devriez aller au château, le Roi pourrait chercher quelqu'un comme vous."
+            f"Vous avez aidé à construire le tunnel à travers la montagne ? C'est génial ! Vous devriez aller au {castle[T]}, le Roi pourrait chercher quelqu'un comme vous."
         )
 
 class Story5(AlwaysValid): # Quest giver: Quentintin, Location: Village
@@ -438,7 +438,7 @@ class Story5(AlwaysValid): # Quest giver: Quentintin, Location: Village
     def post_quest(self):
         print(
             f"{self.npc} : Je me sens si bien, caché de tous !\n"
-            "Il parait qu'au fond du lac, il y'a un trésor, si tu arrives à trouver le Capitaine Haddock, parle lui, il te conseillera"
+            f"Il parait qu'au fond du {lake[T]}, il y'a un trésor, si tu arrives à trouver le Capitaine Haddock, parle lui, il te conseillera"
         )
 
 symlinks = []

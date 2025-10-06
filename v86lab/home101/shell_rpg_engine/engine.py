@@ -225,7 +225,6 @@ class NPC:
         try:
             print(module_name)
             module = importlib.import_module(module_name)
-            print("pass")
             quest_val_class = getattr(module, class_name)
             quest_val_instance = quest_val_class(self.get_next_quest(), Player(), os.path.join(os.getcwd(), self.name))
             return quest_val_instance
