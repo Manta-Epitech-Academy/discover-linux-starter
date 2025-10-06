@@ -14,6 +14,8 @@ from path import *
 
 base = "/tmp/game_map"
 
+
+
 livres = [
     "Germinal",
     "Madame Bovary",
