@@ -1,9 +1,25 @@
 #!/usr/bin/env python3
 
+import sys
 import os
 import json
-import sys
 import importlib
+
+# Add /tmp/bin/quests to sys.path for runtime dynamic imports
+runtime_quests_dir = os.path.join("/tmp", "bin", "quests")
+if runtime_quests_dir not in sys.path:
+    sys.path.insert(0, runtime_quests_dir)
+
+# Ensure config.py exists in /tmp/bin/quests for dynamic imports
+source_config = os.path.join(os.path.dirname(__file__), "quests", "config.py")
+target_config = os.path.join(runtime_quests_dir, "config.py")
+if not os.path.exists(target_config) and os.path.exists(source_config):
+    import shutil
+    shutil.copyfile(source_config, target_config)
+
+quests_dir = os.path.join(os.path.dirname(__file__), "quests")
+if quests_dir not in sys.path:
+    sys.path.insert(0, quests_dir)
 
 PLAYER_FILE = '/tmp/player.json'
 
@@ -207,6 +223,7 @@ class NPC:
     def get_quest_validation_instance(self, quest_name):
         module_name, class_name = quest_name.rsplit('.', 1)
         try:
+            print(module_name)
             module = importlib.import_module(module_name)
             quest_val_class = getattr(module, class_name)
             quest_val_instance = quest_val_class(self.get_next_quest(), Player(), os.path.join(os.getcwd(), self.name))
@@ -305,7 +322,7 @@ ACTIONS = {
 }
 
 if __name__ == "__main__":
-    try:
-        ACTIONS[os.path.basename(sys.argv[0])](sys.argv[1:])
-    except Exception as e:
-        print(bold(f"Impossible d'exécuter cette action."))
+    # try:
+    ACTIONS[os.path.basename(sys.argv[0])](sys.argv[1:])
+    # except Exception as e:
+    #     print(bold(f"Impossible d'exécuter cette action."))
