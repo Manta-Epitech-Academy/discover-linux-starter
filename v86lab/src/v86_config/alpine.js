@@ -2,15 +2,15 @@ import { SaveRestoreHD } from "../hd.js";
 
 export const config = {
   vga_bios: {
-    url: "/bios/vgabios.bin",
+    url: "bios/vgabios.bin",
   },
   screen_container: document.getElementById("screen_container"),
-  wasm_path: "/wasm/v86.wasm",
+  wasm_path: "wasm/v86.wasm",
   memory_size: 512 * 1024 * 1024,
-  bios: { url: "/bios/seabios.bin" },
+  bios: { url: "bios/seabios.bin" },
   filesystem: {
-    baseurl: "/images/alpine-rootfs-flat",
-    basefs: "/images/alpine-fs.json",
+    baseurl: "images/alpine-rootfs-flat",
+    basefs: "images/alpine-fs.json",
   },
   autostart: true,
   bzimage_initrd_from_filesystem: true,
@@ -23,5 +23,5 @@ export const config = {
     net_device: {
         type: "virtio",
     },
-    initial_state: { url: "/images/alpine-state.bin" }
+    initial_state: { url: "images/alpine-state.bin" }
 };
