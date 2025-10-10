@@ -104,6 +104,22 @@ def create_lake_files(n=200):
            }]
     return obj
 
+def find_parent_in_dict(obj, key, value):
+    """Recursively find parent dicts that contain a specific key/value."""
+    results = []
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            # Check for a match at this level
+            if k == key and v == value:
+                results.append(obj)
+            # Recurse deeper
+            results.extend(find_parent_in_dict(v, key, value))
+    elif isinstance(obj, list):
+        for item in obj:
+            results.extend(find_parent_in_dict(item, key, value))
+    return results
+
+
 class QuestValidation:
     def __init__(self, quest, player, npc):
         self.player = player
@@ -302,15 +318,22 @@ class HiddenFile(QuestValidation): # Quest giver: Kevin, Location: forest
 
     def validate_quest(self):
         super().validate_quest()
-        if Checks.input_str("Quel est le contenu de la carte du passage secret ?") == f"cd {passage_secret_path}":
+        matches = find_parent_in_dict(map.MAP, "content", "cd ../{mountain[T]}/.passage_secret\n")
+        print(matches)
+        with open(f"{base}/{forest[T]}/.carte_cachee.obj", "r") as f:
+            file_content = f.read().strip()
+        if Checks.input_str("Quel est le contenu de la carte du passage secret ?") == file_content:
             self.post_quest()
             return True, "Vous avez trouvé la carte du passage secret !"
         else:
             return False, "Vous devez trouver la carte du passage secret dans la forêt."
 
     def post_quest(self):
-        os.chmod(f"{passage_secret_path}", 0o755)
-        os.chmod(f"{route_de_montagne_path}", 0o600)
+        try:
+            os.chmod(f"{passage_secret_path}", 0o755)
+            os.chmod(f"{route_de_montagne_path}", 0o600)
+        except:
+            pass
 
 
 class AcceptShell(QuestValidation): # Quest giver: Fisherman, Location: sea
