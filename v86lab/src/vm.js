@@ -52,9 +52,9 @@ export class VirtualMachine {
     return `
             <div id="v86-mem-state-controls-${this.uuid}" class="v86-mem-state-controls">
                     <div class="input-group"> 
-                        <button id="v86-save-${this.uuid}" class="v86-button btn btn-primary">Save State</button>
+                        <button id="v86-save-${this.uuid}" class="v86-button btn btn-warning">Save State</button>
                         <input type="file" id="v86-load-file-${this.uuid}" class="v86-file-input form-control" />
-                        <button id="v86-load-${this.uuid}" class="v86-button btn btn-primary">Load State</button>
+                        <button id="v86-load-${this.uuid}" class="v86-button btn btn-warning">Load State</button>
                     </div>
             </div>
         `;
