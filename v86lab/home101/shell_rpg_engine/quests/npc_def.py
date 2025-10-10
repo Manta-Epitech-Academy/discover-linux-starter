@@ -219,15 +219,15 @@ class HiddenCreate(QuestValidation):  # Quest giver: Quentintin, Location: Villa
 class Treasure(QuestValidation):
     def validate_quest(self):
         super().validate_quest()
-        if os.path.isfile(f"{lac_path}/tresor.tar"):
+        if os.path.isfile(f"{lac_path}/tresor.tar.obj"):
+            os.system(f"mv {lac_path}/tresor.tar.obj {lac_path}/tresor.tar"
             return True, "Tonnerre de tonnerres ! Merci d'avoir repêché ce sacré trésor, mais maintenant, bougre d'explorateur d'eau douce, il va falloir l'ouvrir, nom d'un bachibouzouk !"
         else:
             return False, f"Mille sabords ! Halte-là, moussaillons ! Ramenez ce trésor au bercail, droit au {lake[T]}, et plus vite que ça, espèces de marins d'eau douce !"
 
-class TreasureOpen(QuestValidation): # Quest giver: Quentintin, Location: Village
+class TreasureOpen(QuestValidation): # Quest giver: Haddock, Location: Lake
     def validate_quest(self):
         super().validate_quest()
-        planque_path = os.path.join(village_path, ".planque")
         if os.path.isdir(f"{lac_path}/tresor"):
             return True, "Tonnerre de Brest ! Bravo, moussaillon, tu as ouvert le trésor ! Mille millions de sabords, te voilà désormais en possession des deux formules magiques... ça pourra te servir plus tard, ou que le diable m'emporte !"
         else:
@@ -318,8 +318,6 @@ class HiddenFile(QuestValidation): # Quest giver: Kevin, Location: forest
 
     def validate_quest(self):
         super().validate_quest()
-        matches = find_parent_in_dict(map.MAP, "content", "cd ../{mountain[T]}/.passage_secret\n")
-        print(matches)
         with open(f"{base}/{forest[T]}/.carte_cachee.obj", "r") as f:
             file_content = f.read().strip()
         if Checks.input_str("Quel est le contenu de la carte du passage secret ?") == file_content:
