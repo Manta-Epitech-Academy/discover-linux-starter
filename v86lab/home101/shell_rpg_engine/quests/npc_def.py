@@ -311,9 +311,12 @@ class Shortcut(QuestValidation): # Quest giver: Guard, Location: dungeon
         symlink_to_village = None
         for file in os.listdir(dungeon_path):
             abspath = f"/{donjon_path}/{file}"
+            print(abspath)
             if (os.path.exists(abspath) and os.path.islink(abspath) and os.path.isdir(abspath)):
                 try:
                     original_path = os.readlink(abspath)
+                    print("Original path: ",original_path)
+                    print(f"chemin: /{base}/{village_path}")
                     if os.path.samefile(original_path, f"/{village_path}"):
                         symlink_to_village = abspath
                         break
@@ -363,9 +366,15 @@ class AlwaysValid(QuestValidation): # For any quest that is always valid: For ex
 
 class KingSummons(AlwaysValid):  # Quest giver: Roi, Location: chateau
     def post_quest(self):
+        #QUICK AND DIRTY FIX
+        vrai_throne_path = "/tmp/game_map/montagne_maudite/tunnel_hanté/route_de_montagne_maudite/vallée_maudite/château_hanté/salle_du_trône_hantée"
         os.system(
-            f"mv {throne_room}/Roi.npc {mer_for_path}/"
+            f"mv {vrai_throne_path}/Roi.npc {mer_for_path}/"
         )
+        #TODO: Quentin répare ton code cassé !
+        #os.system(
+        #    f"mv {throne_room}/Roi.npc {mer_for_path}/"
+        #)
         mer_path = f"{mer_for_path}"
         for i in range(1, 4):
             with open(f"{mer_path}/brigand_{i}.brig", "w") as f:
