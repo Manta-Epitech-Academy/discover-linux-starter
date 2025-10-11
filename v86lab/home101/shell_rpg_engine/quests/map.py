@@ -323,7 +323,7 @@ MAP =  {
                                                                     "text": "J'ai besoin d'un raccourci vers le village, pouvez-vous en créer un ?",
                                                                     "desc": "Créer un raccourci vers le village.",
                                                                     "level": 3,
-                                                                    "script": "quests.npc_def.shortcut"
+                                                                    "script": "quests.npc_def.Shortcut"
                                                                 }
                                                             ]
                                                         }
