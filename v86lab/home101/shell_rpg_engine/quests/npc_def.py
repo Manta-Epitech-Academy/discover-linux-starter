@@ -308,7 +308,18 @@ class Shortcut(QuestValidation): # Quest giver: Guard, Location: dungeon
     def validate_quest(self):
         super().validate_quest()
         dungeon_path = f"{base}/{donjon_path}"
-        if Checks.file_is_a_symlink_to(f"{dungeon_path}/raccourci", f"{base}/{village_path}/"):
+        symlink_to_village = None
+        for file in os.listdir(dungeon_path):
+            abspath = f"/{dungeon_path}/{file}"
+            if (os.path.exists(abspath) and os.path.islink(abspath) and os.path.isdir(abspath)):
+                try:
+                    original_path = os.readlink(abspath)
+                    if os.path.samefile(original_path, f"/{base}/{village_path}"):
+                        symlink_to_village = abspath
+                        break
+                except:
+                    continue
+        if symlink_to_village:
             return True, f"Vous avez créé un raccourci vers le {village_path} !"
         else:
             return False, f"Vous devez créer un raccourci vers le {village_path}."
