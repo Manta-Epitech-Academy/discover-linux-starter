@@ -366,15 +366,9 @@ class AlwaysValid(QuestValidation): # For any quest that is always valid: For ex
 
 class KingSummons(AlwaysValid):  # Quest giver: Roi, Location: chateau
     def post_quest(self):
-        #QUICK AND DIRTY FIX
-        vrai_throne_path = "/tmp/game_map/montagne_maudite/tunnel_hanté/route_de_montagne_maudite/vallée_maudite/château_hanté/salle_du_trône_hantée"
         os.system(
-            f"mv {vrai_throne_path}/Roi.npc {mer_for_path}/"
+            f"mv {salle_du_trone_path}/Roi.npc {mer_for_path}/"
         )
-        #TODO: Quentin répare ton code cassé !
-        #os.system(
-        #    f"mv {throne_room}/Roi.npc {mer_for_path}/"
-        #)
         mer_path = f"{mer_for_path}"
         for i in range(1, 4):
             with open(f"{mer_path}/brigand_{i}.brig", "w") as f:
