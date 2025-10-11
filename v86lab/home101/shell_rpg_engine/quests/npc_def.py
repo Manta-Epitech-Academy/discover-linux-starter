@@ -307,14 +307,14 @@ class Shortcut(QuestValidation): # Quest giver: Guard, Location: dungeon
 
     def validate_quest(self):
         super().validate_quest()
-        dungeon_path = f"{base}/{donjon_path}"
+        dungeon_path = f"{donjon_path}"
         symlink_to_village = None
         for file in os.listdir(dungeon_path):
-            abspath = f"/{dungeon_path}/{file}"
+            abspath = f"/{donjon_path}/{file}"
             if (os.path.exists(abspath) and os.path.islink(abspath) and os.path.isdir(abspath)):
                 try:
                     original_path = os.readlink(abspath)
-                    if os.path.samefile(original_path, f"/{base}/{village_path}"):
+                    if os.path.samefile(original_path, f"/{village_path}"):
                         symlink_to_village = abspath
                         break
                 except:
