@@ -416,6 +416,26 @@ class KingCanonIntro(QuestValidation):  # Quest giver: Roi, Location: mer
         else:
             return False, "Les brigands ne sont pas tous éliminés, héros. Termine le travail !"
 
+    def post_quest(self):
+        with open("/tmp/chef_brigand", "w") as f:
+            f.write(f"""
+            #!/bin/bash
+            while true; do
+                NB_BRIG=`ls -l {mer_for_path} | grep -c '.brig'`
+                [[ $NB_BRIG -lt 10 ]] && echo "Un brigand menaçant se tient devant toi." > brigand_$RANDOM.brig
+                sleep $(($(($RANDOM % 10)) + 1))
+            done
+            """)
+        os.system("chmod +x /tmp/chef_brigand")
+        os.system("pgrep chef_brigand || /tmp/chef_brigand &")
+
+class KillProcess(QuestValidation):
+    def validate_quest(self):
+        if os.system("pgrep chef_brigand") != 0:
+            return True, "Le chef des brigands n'est plus là. Victoire !"
+        else:
+            return False, "Le chef des brigands est toujours là... Trouve son processus et arrête-le !"
+
 class IsKing(QuestValidation):
     def validate_quest(self):
         super().validate_quest()

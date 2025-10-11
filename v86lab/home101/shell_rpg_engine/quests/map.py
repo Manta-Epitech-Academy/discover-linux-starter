@@ -368,6 +368,15 @@ MAP =  {
                                                                         "level": 3,
                                                                         "script": "quests.npc_def.KingCanonIntro",
                                                                         "rewards": []
+                                                                    },
+                                                                    {
+                                                                        "name": "brigands_phase3",
+                                                                        "must_done": ["brigands_phase2"],
+                                                                        "text": "Ils reviennent toujours. Trouve le processus chef_brigand et trouve un moyen de l'arrêter",
+                                                                        "desc": "Vaincre le chef des brigands",
+                                                                        "level": 4,
+                                                                        "script": "quests.npc_def.KillProcess",
+                                                                        "rewards": []
                                                                     }
                                                                 ]
                                                             }
