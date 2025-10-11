@@ -220,7 +220,7 @@ class Treasure(QuestValidation):
     def validate_quest(self):
         super().validate_quest()
         if os.path.isfile(f"{lac_path}/tresor.tar.obj"):
-            os.system(f"mv {lac_path}/tresor.tar.obj {lac_path}/tresor.tar"
+            os.system(f"mv {lac_path}/tresor.tar.obj {lac_path}/tresor.tar")
             return True, "Tonnerre de tonnerres ! Merci d'avoir repêché ce sacré trésor, mais maintenant, bougre d'explorateur d'eau douce, il va falloir l'ouvrir, nom d'un bachibouzouk !"
         else:
             return False, f"Mille sabords ! Halte-là, moussaillons ! Ramenez ce trésor au bercail, droit au {lake[T]}, et plus vite que ça, espèces de marins d'eau douce !"
