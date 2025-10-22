@@ -5,7 +5,7 @@
 Le projet utilise [v86](https://copy.sh/v86/), un émulateur x86 dans le navigateur.
 Et v86lab: un wrapper pour v86 qui permet de facilement créer des VM Linux dans le navigateur avec le support réseau entre les VM.
 
-Une version déjà déployée est accessible sur [https://lab.epitech.academy/discover-linux-starter/](https://lab.epitech.academy/discover-linux-starter/) et [https://lab.epitech.academy/discover-linux-1/] (https://lab.epitech.academy/discover-linux-1/)
+Une version déjà déployée est accessible sur [https://lab.epitech.academy/discover-linux-starter/](https://lab.epitech.academy/discover-linux-starter/) et [https://lab.epitech.academy/discover-linux-1/](https://lab.epitech.academy/discover-linux-1/)
 
 ### Comment lancer l'atelier ?
 
