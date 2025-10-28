@@ -28,12 +28,12 @@ COPY run_at_startup_root.sh /root/run_at_startup_root.sh
 RUN chmod +x /root/run_at_startup_root.sh
 RUN chown -R user42:user42 /home/user42/
 
-#RUN sed -i 's/getty 38400 tty1/agetty --autologin root tty1 linux/' /etc/inittab
+# Set up autologin for both the serial console (ttyS0) as root and the main console (tty1) as user42
 RUN echo 'ttyS0::respawn:/sbin/agetty --autologin root -s ttyS0 115200 vt100' >> /etc/inittab
 RUN sed 's@tty1::respawn:/sbin/getty 38400 tty1@@g' -i /etc/inittab
-RUN echo 'tty1::respawn:/sbin/getty -n -l /bin/autologin 38400 tty1' >> /etc/inittab
+# Use agetty's built-in autologin feature for user42 on tty1
+RUN echo 'tty1::respawn:/sbin/agetty --autologin user42 --noclear 38400 tty1' >> /etc/inittab
 
-#RUN echo 'tty1::respawn:/sbin/agetty -n -l /bin/autologin tty1 linux' >> /etc/inittab
 RUN echo "root:" | chpasswd
 RUN echo "user42:" | chpasswd
 
@@ -41,10 +41,6 @@ RUN echo "user42:" | chpasswd
 
 RUN mkdir -p /delivery
 RUN chown user42:user42 /delivery
-
-# Adding networking.sh script
-#RUN echo -e "rmmod ne2k-pci && modprobe ne2k-pci\nrmmod virtio-net && modprobe virtio-net\nhwclock -s\nsetup-interfaces -a -r" > /root/networking.sh && chmod +x /root/networking.sh
-
 
 RUN cat > /etc/profile.d/999setup_env_user42.sh <<'EOF'
 if [[ $(id -u) -eq 1000 ]]; then
@@ -75,16 +71,6 @@ END
     cd
 fi
 EOF
-
-
-RUN cat > /bin/autologin <<'EOF'
-#!/bin/sh
-
-clear
-exec login -f user42
-EOF
-
-RUN chmod +x /bin/autologin
 
 RUN setup-keymap fr fr
 
