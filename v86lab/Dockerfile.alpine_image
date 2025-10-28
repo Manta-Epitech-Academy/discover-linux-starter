@@ -46,7 +46,7 @@ RUN chown user42:user42 /delivery
 #RUN echo -e "rmmod ne2k-pci && modprobe ne2k-pci\nrmmod virtio-net && modprobe virtio-net\nhwclock -s\nsetup-interfaces -a -r" > /root/networking.sh && chmod +x /root/networking.sh
 
 
-COPY <<EOF /etc/profile.d/999setup_env_user42.sh
+RUN cat > /etc/profile.d/999setup_env_user42.sh <<'EOF'
 if [[ $(id -u) -eq 1000 ]]; then
     export PS1='$> '
     #export HOME=/tmp/game_map
@@ -77,7 +77,7 @@ fi
 EOF
 
 
-COPY <<EOF /bin/autologin
+RUN cat > /bin/autologin <<'EOF'
 #!/bin/sh
 
 clear
