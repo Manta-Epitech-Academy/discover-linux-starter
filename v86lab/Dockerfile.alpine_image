@@ -72,6 +72,8 @@ END
 fi
 EOF
 
+RUN echo 'export PATH=/tmp/bin:$PATH' >> /etc/profile
+
 RUN setup-keymap fr fr
 
 # https://wiki.alpinelinux.org/wiki/Alpine_Linux_in_a_chroot#Preparing_init_services
