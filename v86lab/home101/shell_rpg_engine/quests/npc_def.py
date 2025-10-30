@@ -514,7 +514,10 @@ def create_zone(name, map_data):
         print(f"Created NPC file at {npc_path}")
     for obj in map_data.get("objects", []):
         print(f"Creating object: {obj['name']} in {name}")
-        obj_path = os.path.join(name, f"{obj['name'].lower()}.obj")
+        if (obj['name'] == "tresor.tar"):
+            obj_path = os.path.join(name, f"{obj['name'].lower()}")
+        else:
+            obj_path = os.path.join(name, f"{obj['name'].lower()}.obj")
         with open(obj_path, 'w') as obj_file:
             obj_file.write(obj['content'])
         print(f"Created object file at {obj_path}")
