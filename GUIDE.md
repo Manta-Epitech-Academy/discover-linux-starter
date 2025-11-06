@@ -3,9 +3,11 @@
 ### FAQ Déroulé:
 
 > Impossible de scroller vers le haut, donc pour les affichages qui dépassent la taille de l'écran on ne pouvait pas voir le début.
+
 L'atelier utilise un TTY, il n'y a pas de scroll dans un TTY par défaut. Il faut guider le participant sur l'utilisation de la commande `less` et bien lire ce qui est affiché à l'écran avant de faire apparaitre du texte à nouveau. Ce n'est donc pas un bug, c'est une fonctionnalité.
 
 > Le participant est perdu, il ne sait pas ce qu'il faut faire.
+
 L'atelier est conçu comme une sorte de RPG en "monde ouvert". Les quêtes peuvent êtres faite dans pratiquement n'importe quel ordre, *MAIS* il y a un ordre logique qui permet au participant de récolter des indices (accessibles via la commande `player`). Il ne faut pas hésiter à mettre une quête de côté car on a pas encore les ressources nécessaire (la connaissance que la commande X existe) pour terminer la quête et aller chercher une autre quête.
 
 ### Comment ça fonctionne ?
