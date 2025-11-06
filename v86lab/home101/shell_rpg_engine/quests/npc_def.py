@@ -366,15 +366,9 @@ class AlwaysValid(QuestValidation): # For any quest that is always valid: For ex
 
 class KingSummons(AlwaysValid):  # Quest giver: Roi, Location: chateau
     def post_quest(self):
-        #QUICK AND DIRTY FIX
-        vrai_throne_path = "/tmp/game_map/montagne_maudite/tunnel_hanté/route_de_montagne_maudite/vallée_maudite/château_hanté/salle_du_trône_hantée"
         os.system(
-            f"mv {vrai_throne_path}/Roi.npc {mer_for_path}/"
+            f"mv {salle_du_trone_path}/Roi.npc {mer_for_path}/"
         )
-        #TODO: Quentin répare ton code cassé !
-        #os.system(
-        #    f"mv {throne_room}/Roi.npc {mer_for_path}/"
-        #)
         mer_path = f"{mer_for_path}"
         for i in range(1, 4):
             with open(f"{mer_path}/brigand_{i}.brig", "w") as f:
@@ -520,7 +514,10 @@ def create_zone(name, map_data):
         print(f"Created NPC file at {npc_path}")
     for obj in map_data.get("objects", []):
         print(f"Creating object: {obj['name']} in {name}")
-        obj_path = os.path.join(name, f"{obj['name'].lower()}.obj")
+        if (obj['name'] == "tresor.tar"):
+            obj_path = os.path.join(name, f"{obj['name'].lower()}")
+        else:
+            obj_path = os.path.join(name, f"{obj['name'].lower()}.obj")
         with open(obj_path, 'w') as obj_file:
             obj_file.write(obj['content'])
         print(f"Created object file at {obj_path}")
