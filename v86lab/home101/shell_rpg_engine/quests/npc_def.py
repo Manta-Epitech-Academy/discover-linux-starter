@@ -219,8 +219,7 @@ class HiddenCreate(QuestValidation):  # Quest giver: Quentintin, Location: Villa
 class Treasure(QuestValidation):
     def validate_quest(self):
         super().validate_quest()
-        if os.path.isfile(f"{lac_path}/tresor.tar.obj"):
-            os.system(f"mv {lac_path}/tresor.tar.obj {lac_path}/tresor.tar")
+        if os.path.isfile(f"{lac_path}/tresor.tar"):
             return True, "Tonnerre de tonnerres ! Merci d'avoir repêché ce sacré trésor, mais maintenant, bougre d'explorateur d'eau douce, il va falloir l'ouvrir, nom d'un bachibouzouk !"
         else:
             return False, f"Mille sabords ! Halte-là, moussaillons ! Ramenez ce trésor au bercail, droit au {lake[T]}, et plus vite que ça, espèces de marins d'eau douce !"
@@ -228,10 +227,10 @@ class Treasure(QuestValidation):
 class TreasureOpen(QuestValidation): # Quest giver: Haddock, Location: Lake
     def validate_quest(self):
         super().validate_quest()
-        if os.path.isdir(f"{lac_path}/tresor"):
-            return True, "Tonnerre de Brest ! Bravo, moussaillon, tu as ouvert le trésor ! Mille millions de sabords, te voilà désormais en possession des deux formules magiques... ça pourra te servir plus tard, ou que le diable m'emporte !"
+        if os.path.isfile(f"{lac_path}/parchemin_secret1.obj") and os.path.isfile(f"{lac_path}/parchemin_secret2.obj") and os.path.isfile(f"{lac_path}/parchemin_secret3.obj"):
+            return True, "Tonnerre de Brest ! Bravo, moussaillon, tu as ouvert le trésor ! Mille millions de sabords, te voilà désormais en possession des  formules magiques... ça pourra te servir plus tard, ou que le diable m'emporte !"
         else:
-            return False, f"Mille milliards de mille sabords ! N'oublie pas ta quête, moussaillon : ouvre le trésor et empare-toi des deux formules magiques, ou tu finiras marin d'eau douce à vie !"
+            return False, f"Mille milliards de mille sabords ! N'oublie pas ta quête, moussaillon : ouvre le trésor et empare-toi des formules magiques, ou tu finiras marin d'eau douce à vie !"
 
 class ReadFile(QuestValidation): # Quest giver: Kevin, Location: forest
 
@@ -522,7 +521,10 @@ def create_zone(name, map_data):
         print(f"Created NPC file at {npc_path}")
     for obj in map_data.get("objects", []):
         print(f"Creating object: {obj['name']} in {name}")
-        obj_path = os.path.join(name, f"{obj['name'].lower()}.obj")
+        if (obj['name'] == "tresor.tar"):
+            obj_path = os.path.join(name, f"{obj['name'].lower()}")
+        else:
+            obj_path = os.path.join(name, f"{obj['name'].lower()}.obj")
         with open(obj_path, 'w') as obj_file:
             obj_file.write(obj['content'])
         print(f"Created object file at {obj_path}")

@@ -259,7 +259,7 @@ MAP =  {
                                                 {
                                                 "name": "Open treasure",
                                                 "must_done": ["Find treasure"],
-                                                "text": "Mille sabords ! Voilà le trésor empaqueté dans ce maudit .tar !\n\n Pour l'ouvrir, bande de bachibouzouks, tapez donc : tar -xvf tresor.tar \n...et que le butin se déverse enfin !",
+                                                "text": "Mille sabords ! Voilà le trésor empaqueté dans ce maudit .tar !\n\n Pour l'ouvrir, bande de bachibouzouks, tapez donc : tar xvf tresor.tar \n...et que le butin se déverse enfin !",
                                                 "desc": "Ramenez le trésor pour le capitaine Haddock",
                                                 "level": 2,
                                                 "script": "quests.npc_def.TreasureOpen"
