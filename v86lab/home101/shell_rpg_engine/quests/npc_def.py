@@ -346,23 +346,25 @@ class HiddenFile(QuestValidation): # Quest giver: Kevin, Location: forest
             os.chmod(f"{route_de_montagne_path}", 0o600)
         except:
             pass
-
-
-class AcceptShell(QuestValidation): # Quest giver: Fisherman, Location: sea
-    def validate_quest(self):
-        super().validate_quest()
-        if Checks.input_str("Voulez-vous le joli coquillage ? (oui/non) ") == "oui":
-            return True, "Merci d'avoir accepté le joli coquillage !"
-        else:
-            return False, "D'accord, demandez-moi à nouveau si vous le voulez."
-        
-    def post_quest(self):
-        os.system('export PS1="\\u@\\h \\w> "; exec bash --norc')
         
 class AlwaysValid(QuestValidation): # For any quest that is always valid: For example, to give something to the player or print some lore related messages and progress in the story.
 
     def validate_quest(self):
         return True, ""
+
+class AcceptShell(AlwaysValid): # Quest giver: Fisherman, Location: sea
+    def post_quest(self):
+        super().post_quest()
+        current_PS1 = os.getenv("PS1")
+        if (current_PS1 == "\\u@\\h:\\w> "):
+            print("Vous avez déjà un prompt qui vous indique votre nom d'utilisateur, le nom de la machine et le répertoire courant.")
+            return
+        print("Voici un prompt qui vous indique votre nom d'utilisateur, le nom de la machine et le répertoire courant.")
+        print("Lance la commande suivante pour appliquer le prompt: ")
+        print("source /tmp/shellrc")
+        with open("/tmp/shellrc", "w+") as f:
+            f.write('export PS1="\\u@\\h:\\w> "')
+
 
 class KingSummons(AlwaysValid):  # Quest giver: Roi, Location: chateau
     def post_quest(self):
@@ -403,7 +405,7 @@ class KingBrigandsManual(QuestValidation):  # Quest giver: Roi, Location: mer
                 f.write("Un brigand menaçant se tient devant toi.")
         with open(f"{mer_for_path}/canon.sh", "w") as f:
             f.write("#!/bin/bash\n")
-            f.write("# /!\ ATTENTION : cette commande détruit TOUT dans le répertoire courant\n")
+            f.write("# /!\\ ATTENTION : cette commande détruit TOUT dans le répertoire courant\n")
             f.write("rm *\n")
         os.chmod(f"{mer_for_path}/canon.sh", 0o600)
 
